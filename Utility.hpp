@@ -5,10 +5,18 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <algorithm>
 #include <stdexcept>
 #include <type_traits>
 
-std::vector<std::string> split_line(const std::string& s, char delim = ' ');
+std::vector<std::string> split_line(const std::string& s, const std::vector<char>& delim = {' '});
+
+template<class Container, class T>
+inline
+bool contains(const Container& c, const T& val)
+{
+	return std::find(c.cbegin(), c.cend(), val) != c.cend();
+}
 
 template<class T>
 T parseNumber(std::string s)
@@ -48,5 +56,7 @@ void getline_no_CR(std::istream& is, std::string& line, char delim = '\n')
 	std::getline(is, line, delim);
 	remove_carriage_return(line);
 }
+
+
 
 #endif // GS_UTILITY_HPP_GUARD

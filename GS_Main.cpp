@@ -1,15 +1,13 @@
 /* DIAMOCI DENTRO! :) AB
 HOOORRAAAAY!!!!! MG */
 
-#include "Element.hpp"
-#include "Species.hpp"
+#include "GS_Element.hpp"
+#include "GS_Species.hpp"
 #include "Utility.hpp"
-#include <vector>
-#include <string>
 #include <fstream>
-#include <algorithm>
 
 using namespace std;
+using namespace BetterGS;
 
 vector<Element> elements;
 static const string fileTestElement{"../BetterGS/Test Element.txt"};
@@ -87,7 +85,7 @@ int main(int arcg, char* argv[])
 		{
 			Species species(ifs, elements);
 			cout << species;
-			cout << "The molecular weight of this species is: " << species.compute_MW() << " [g/mol]" << endl;
+			cout << "The molecular weight of this species is: " << species.MW() << " [g/mol]" << endl;
 		}
 		catch (const exception& e)
 		{

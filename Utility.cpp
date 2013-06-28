@@ -2,7 +2,7 @@
 
 using namespace std;
 
-vector<string> split_line(const string& s, char delim)
+vector<string> split_line(const string& s, const vector<char>& delim)
 {
 	vector<string> words;
 	typedef string::size_type string_size;
@@ -13,13 +13,13 @@ vector<string> split_line(const string& s, char delim)
 	{
 		// ignore leading blanks
 		// invariant: characters in range `['original `i', current `i)' are all spaces
-		while (i < s.size() && (isspace(s[i]) || s[i] == delim))
+		while (i < s.size() && (isspace(s[i]) || contains(delim, s[i])))
 			++i;
 
 		// find end of next word
 		string_size j = i;
 		// invariant: none of the characters in range `['original `j', current `j)' is a space
-		while (j < s.size() && !isspace(s[j]) && s[j] != delim)
+		while (j < s.size() && !isspace(s[j]) && !contains(delim, s[j]))
 			++j;
 
 		// if we found some nonwhitespace characters
