@@ -4,16 +4,22 @@ HOOORRAAAAY!!!!! MG */
 #include "GS_Element.hpp"
 #include "GS_Species.hpp"
 #include "Utility.hpp"
+#include "BbVector.hpp"
 #include <fstream>
 
 using namespace std;
 using namespace BetterGS;
+using namespace BbMath;
 
-vector<Element> elements;
+vector<GS_Element> elements;
 static const string fileTestElement{"../BetterGS/Test Element.txt"};
 
 int main(int arcg, char* argv[])
 {
+	BbVector a{2., 3., 666.};
+	cout << "Yo! BbMath working as a Static Library!!! YEEEEEEEE! Proof:\nBbVector a{2., 3., 666.} --> " << a << endl;
+	return 666;
+
 	{
 		// Open input file stream
 		bool binary = false;
@@ -49,13 +55,13 @@ int main(int arcg, char* argv[])
 		elements.resize(nLines);
 
 		// Read element data
-		for_each(elements.begin(), elements.end(), [&ifs](Element& elem)
+		for_each(elements.begin(), elements.end(), [&ifs](GS_Element& elem)
 		{
 			elem.read(ifs);
 		});
 	
 		// Print each element
-		for_each(elements.begin(), elements.end(), [](const Element& elem)
+		for_each(elements.begin(), elements.end(), [](const GS_Element& elem)
 		{
 			cout << elem << endl;
 		});
@@ -83,7 +89,7 @@ int main(int arcg, char* argv[])
 		// Find the end beginning of the Element Data section and count the lines
 		try
 		{
-			Species species(ifs, elements);
+			GS_Species species(ifs, elements);
 			cout << species;
 			cout << "The molecular weight of this species is: " << species.MW() << " [g/mol]" << endl;
 		}

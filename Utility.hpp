@@ -19,7 +19,7 @@ bool contains(const Container& c, const T& val)
 }
 
 template<class T>
-T parseNumber(std::string s)
+T parse_number(std::string s)
 {
 	static_assert(std::is_arithmetic<T>::value, "Parse number cannot be instantiated to parse a string to a non-arithmetic type!!\n");
 
@@ -32,10 +32,10 @@ T parseNumber(std::string s)
 	T ret;
 
     if (std::is_same<T, int>::value && pos != std::string::npos)
-        throw std::runtime_error("Error in parseNumber() - The int isn't properly formatted!!\n");
+        throw std::runtime_error("Error in parse_number() - The int isn't properly formatted!!\n");
 
 	if (!(iss >> ret))
-        throw std::runtime_error("Error in parseNumber() - The string doesn't contain a properly formatted number!!\n");
+        throw std::runtime_error("Error in parse_number() - The string doesn't contain a properly formatted number!!\n");
 
 	return ret;
 }

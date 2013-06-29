@@ -5,7 +5,7 @@
 
 namespace BetterGS
 {
-	class Element
+	class GS_Element
 	{
 	private:
 		std::string name;
@@ -16,14 +16,14 @@ namespace BetterGS
 
 	public:
 		// Constructors
-		Element()
+		GS_Element()
 			: name(emptyString) { }
-		explicit Element(std::istream& is)
+		explicit GS_Element(std::istream& is)
 			: name(emptyString) { read(is);}				// Construct an Element by reading its data from the gsi file
 
 		// Input-output
 		void read(std::istream& is);						// Read data from the gsi file
-		friend std::ostream& operator<<(std::ostream& os, const Element& elem);
+		friend std::ostream& operator<<(std::ostream& os, const GS_Element& elem);
 
 		// Read-only properties
 		std::string Name() const { return name; }
@@ -33,7 +33,7 @@ namespace BetterGS
 		double AmbientConc() const { return ambientConc; }
 
 		// Operators
-		bool operator<(const Element& rhs) const			// Necessary to create a map<Element, int> in class Species
+		bool operator<(const GS_Element& rhs) const			// Necessary to create a map<Element, int> in class Species
 		{ return atomicMass < rhs.atomicMass; }
 	};
 }

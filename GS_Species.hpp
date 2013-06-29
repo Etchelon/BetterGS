@@ -15,7 +15,7 @@ namespace BetterGS
 		void print(std::ostream& os) const;
 	};
 
-	class Species
+	class GS_Species
 	{
 	private:
 		// Physical and TD properties
@@ -28,7 +28,7 @@ namespace BetterGS
 		double _Tc;
 		double _Pc;
 		double _MW;
-		std::map<Element, int> elements;
+		std::map<GS_Element, int> elements;
 
 		// NASA polynomials coefficients
 		unsigned int nIntervals;
@@ -36,12 +36,12 @@ namespace BetterGS
 
 	public:
 		// Constructors
-		Species() : formula(emptyString) { }
-		explicit Species(std::istream& is, const std::vector<Element>& elem);
+		GS_Species() : formula(emptyString) { }
+		explicit GS_Species(std::istream& is, const std::vector<GS_Element>& elem);
 
 		// Input/output
 		void read(std::istream& is);
-		friend std::ostream& operator<<(std::ostream& os, const Species& species);
+		friend std::ostream& operator<<(std::ostream& os, const GS_Species& species);
 
 		// Read-only properties
 		std::string Formula() const { return formula; }

@@ -16,7 +16,7 @@ namespace BetterGS
 		}
 	}
 
-	Species::Species(istream& is, const vector<Element>& elem)
+	GS_Species::GS_Species(istream& is, const vector<GS_Element>& elem)
 		: formula(emptyString)
 	{
 		// Read all input data from the .gsi file
@@ -36,15 +36,15 @@ namespace BetterGS
 		// Helper functor
 		struct ElementInserter
 		{
-			map<Element, int>& elements;
-			const vector<Element>& elem;
+			map<GS_Element, int>& elements;
+			const vector<GS_Element>& elem;
 
-			ElementInserter(map<Element, int>& me, const vector<Element>& ve) : elements(me), elem(ve) { }
+			ElementInserter(map<GS_Element, int>& me, const vector<GS_Element>& ve) : elements(me), elem(ve) { }
 
 			void insert(const string& s, int n)
 			{
 				// Find the element from the list of elements read in the input file
-				auto e = find_if(elem.cbegin(), elem.cend(), [s](const Element& el)
+				auto e = find_if(elem.cbegin(), elem.cend(), [s](const GS_Element& el)
 				{
 					if (el.Name() == s)
 						return true;
@@ -129,7 +129,7 @@ namespace BetterGS
 			inserter.insert(s, 1);
 
 		// Now compute the species's molecular weight from the atomic mass of its elements
-		_MW = accumulate(elements.cbegin(), elements.cend(), 0., [](double a, const pair<Element, int>& p)
+		_MW = accumulate(elements.cbegin(), elements.cend(), 0., [](double a, const pair<GS_Element, int>& p)
 		{
 			auto& e = p.first;
 			int n = p.second;
@@ -138,9 +138,9 @@ namespace BetterGS
 		});
 	}
 
-	void Species::read(istream& is)
+	void GS_Species::read(istream& is)
 	{
-		static const string msg("Error in Species::read(): selected line is not properly formatted!!\n");
+		static const string msg("Error in GS_Species::read(): selected line is not properly formatted!!\n");
 		string line;
 		vector<string> words;
 
@@ -169,13 +169,13 @@ namespace BetterGS
 		if (words.size() != 9)
 			throw runtime_error(msg + "The problematic line is the following:\n\n \"" + line + "\" \n\nThe line must contain exactly 9 numbers!!\n");
 
-		phase      = parseNumber<int>(words[0]);
-		density    = parseNumber<double>(words[1]);
-		dH0f       = parseNumber<double>(words[2]);
-		dS0f       = parseNumber<double>(words[3]);
-		_Tc        = parseNumber<double>(words[4]);
-		_Pc        = parseNumber<double>(words[5]);
-		nIntervals = parseNumber<int>(words[8]);
+		phase      = parse_number<int>(words[0]);
+		density    = parse_number<double>(words[1]);
+		dH0f       = parse_number<double>(words[2]);
+		dS0f       = parse_number<double>(words[3]);
+		_Tc        = parse_number<double>(words[4]);
+		_Pc        = parse_number<double>(words[5]);
+		nIntervals = parse_number<int>(words[8]);
 
 		// Read temperature intervals
 		// e.g.: .2000000000D+03,.1000000000D+04,.6000000000D+04,.0000000000D+00,.0000000000D+00,.0000000000D+00
@@ -189,8 +189,8 @@ namespace BetterGS
 
 		for (size_t i = 0; i < nIntervals; ++i)
 		{
-			nasa[i].lowerBound = parseNumber<double>(words[i]);
-			nasa[i].upperBound = parseNumber<double>(words[i + 1]);
+			nasa[i].lowerBound = parse_number<double>(words[i]);
+			nasa[i].upperBound = parse_number<double>(words[i + 1]);
 		}
 
 		// Read NASA coefficients for every temperature interval
@@ -211,11 +211,11 @@ namespace BetterGS
 				throw runtime_error(msg + "The problematic line is the following:\n\n \"" + line + "\" \n\nThe line must contain exactly 4 numbers!!\n");
 
 			for (size_t k = 0; k < 9; ++k)
-				nasa[i].coefficients[k] = parseNumber<double>(words[k]);
+				nasa[i].coefficients[k] = parse_number<double>(words[k]);
 		}
 	}
 
-	ostream& operator<<(ostream& os, const Species& species)
+	ostream& operator<<(ostream& os, const GS_Species& species)
 	{
 		if (species.formula == emptyString)
 		{
